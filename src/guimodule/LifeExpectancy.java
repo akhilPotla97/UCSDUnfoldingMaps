@@ -38,11 +38,12 @@ public class LifeExpectancy extends PApplet{
 		for(String row : rows)
 		{
 			String[] columns = row.split(",");
-		//	if () 
-	//		{
+	
+			if (columns.length == 17 && !columns[4].equals("..")) 
+			{
 				float value = Float.parseFloat(columns[4]);
 				lifeExpMap.put(columns[3], value);
-	//		}
+			}
 			
 		}
 		
