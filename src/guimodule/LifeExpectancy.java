@@ -19,6 +19,13 @@ public class LifeExpectancy extends PApplet{
 	List<Feature> countries;
 	List<Marker> countryMarkers;
 	
+	
+	/**
+	 * Sets the size of the window and then instantiates the map.
+	 * Calls helper methods loadLifeExpectancyFromCVS() to read in life expectancy
+	 * data from the World Bank.
+	 * Calls helper method shadeCountries() to color in the map.
+	 */
 	public void setup()
 	{
 		size(800, 600, OPENGL);
@@ -36,11 +43,22 @@ public class LifeExpectancy extends PApplet{
 		
 	}
 	
+	/**
+	 * Displays the map
+	 */
 	public void draw()
 	{
 		map.draw();
 	}
 	
+	/**
+	 * Reads in the creates a map of life expectancy data mapping country id to 
+	 * average life expectancy
+	 * @param fileName is the name of file which contains the relevant information
+	 * to be displayed
+	 * @return map that returns the map mapping country id to average life
+	 * expectancy
+	 */
 	private Map<String, Float> loadLifeExpectancyFromCSV(String fileName)
 	{
 		Map<String, Float> lifeExpMap = new HashMap<String, Float>();
@@ -61,6 +79,11 @@ public class LifeExpectancy extends PApplet{
 		return lifeExpMap;
 	}
 	
+	/**
+	 * Takes data from the country id and life expectancy and sets the color for
+	 * the markers. Bright red for the lowest life expectancy and bright blue
+	 * for the highest life expectancy.
+	 */
 	private void shadeCountries()
 	{
 		for(Marker marker : countryMarkers)
