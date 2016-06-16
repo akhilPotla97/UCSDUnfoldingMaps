@@ -78,8 +78,6 @@ public class EarthquakeCityMap extends PApplet {
 	    for (int i = 0; i < earthquakes.size(); i++) {
 	    	PointFeature f = earthquakes.get(i);
 	    	System.out.println(f.getProperties());
-	    	Object magObj = f.getProperty("magnitude");
-	    	float mag = Float.parseFloat(magObj.toString());
 	    	markers.add(createMarker(f));
 	    	// PointFeatures also have a getLocation method
 		}
@@ -96,10 +94,35 @@ public class EarthquakeCityMap extends PApplet {
 	// A suggested helper method that takes in an earthquake feature and 
 	// returns a SimplePointMarker for that earthquake
 	// TODO: Implement this method and call it from setUp, if it helps
+	/**
+	 * Take input of the feature that this earthquake is associated with and parse the magnitude
+	 * use the magnitude to determine how the marker is going to be displayed for that earthquake.
+	 * Earthquakes with a magnitude under 4.0 will be blue and small.
+	 * Earthquakes with a magnitude between 4.0 and 4.9 will be yellow and medium.
+	 * Earthquakes with a magnitude above 5.0 will be red and large.
+	 * @param feature is the feature that is associated with the earthquake that his marker is related to
+	 * @return returns a marker with modified size and color based on magnitude
+	 */
 	private SimplePointMarker createMarker(PointFeature feature)
 	{
 		// finish implementing and use this method, if it helps.
-		return new SimplePointMarker(feature.getLocation());
+		SimplePointMarker mark = new SimplePointMarker(feature.getLocation());
+		float mag = Float.parseFloat(feature.getProperty("magnitude").toString());
+		if(mag < 4){
+			mark.setColor(color(0, 0, 255));
+			mark.setRadius((float) 8.0);
+		}
+		
+		else if(mag >= 4 && mag < 5){
+			mark.setColor(color(255, 255, 0));
+			mark.setRadius((float) 15.0);
+		}
+		
+		else {
+			mark.setColor(color(255, 0, 0));
+			mark.setRadius((float) 25.0);
+		}
+		return mark;
 	}
 	
 	public void draw() {
@@ -108,6 +131,7 @@ public class EarthquakeCityMap extends PApplet {
 	    addKey();  
 	}
 
+	
 
 	// helper method to draw key in GUI
 	// TODO: Implement this method to draw the key
