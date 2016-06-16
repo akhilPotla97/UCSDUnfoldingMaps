@@ -60,7 +60,7 @@ public class EarthquakeCityMap extends PApplet {
 		else {
 			map = new UnfoldingMap(this, 200, 50, 700, 500, new Google.GoogleMapProvider());
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
-			//earthquakesURL = "2.5_week.atom";
+			earthquakesURL = "2.5_week.atom";
 		}
 		
 	    map.zoomToLevel(2);
@@ -75,19 +75,22 @@ public class EarthquakeCityMap extends PApplet {
 	    
 	    // These print statements show you (1) all of the relevant properties 
 	    // in the features, and (2) how to get one property and use it
-	    if (earthquakes.size() > 0) {
-	    	PointFeature f = earthquakes.get(0);
+	    for (int i = 0; i < earthquakes.size(); i++) {
+	    	PointFeature f = earthquakes.get(i);
 	    	System.out.println(f.getProperties());
 	    	Object magObj = f.getProperty("magnitude");
 	    	float mag = Float.parseFloat(magObj.toString());
+	    	markers.add(createMarker(f));
 	    	// PointFeatures also have a getLocation method
-	    }
+		}
+	    		    
 	    
 	    // Here is an example of how to use Processing's color method to generate 
 	    // an int that represents the color yellow.  
 	    int yellow = color(255, 255, 0);
 	    
 	    //TODO: Add code here as appropriate
+	    map.addMarkers(markers);	  
 	}
 		
 	// A suggested helper method that takes in an earthquake feature and 
@@ -102,7 +105,7 @@ public class EarthquakeCityMap extends PApplet {
 	public void draw() {
 	    background(10);
 	    map.draw();
-	    addKey();
+	    addKey();  
 	}
 
 
