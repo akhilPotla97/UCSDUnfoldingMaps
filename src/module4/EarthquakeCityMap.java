@@ -1,7 +1,10 @@
 package module4;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.data.Feature;
@@ -76,7 +79,7 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
-		//earthquakesURL = "test1.atom";
+		earthquakesURL = "test1.atom";
 		//earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
@@ -87,7 +90,7 @@ public class EarthquakeCityMap extends PApplet {
 	    //     STEP 1: load country features and markers
 		List<Feature> countries = GeoJSONReader.loadData(this, countryFile);
 		countryMarkers = MapUtils.createSimpleMarkers(countries);
-		
+	
 		//     STEP 2: read in city data
 		List<Feature> cities = GeoJSONReader.loadData(this, cityFile);
 		cityMarkers = new ArrayList<Marker>();
@@ -165,6 +168,11 @@ public class EarthquakeCityMap extends PApplet {
 		// IMPLEMENT THIS: loop over all countries to check if location is in any of them
 		
 		// TODO: Implement this method using the helper method isInCountry
+		for(int i = 0; i < countryMarkers.size(); i++){
+			if(isInCountry(earthquake, countryMarkers.get(i))){
+				return true;
+			}
+		}
 		
 		// not inside any country
 		return false;
@@ -178,7 +186,41 @@ public class EarthquakeCityMap extends PApplet {
 	// And LandQuakeMarkers have a "country" property set.
 	private void printQuakes() 
 	{
+		List<Marker> earthquakes = copyList(quakeMarkers);
+		Map<String, Integer> numQuakesCountries = new HashMap<String, Integer>();
+		int quakesOcean = 0;
+		
 		// TODO: Implement this method
+		for (int i = 0; i < countryMarkers.size(); i++) {
+			
+			int numInCountry = 0;
+			
+			for (int j = 0; j < earthquakes.size(); j++) {
+				
+				if (isLand(new PointFeature(earthquakes.get(j).getLocation()))) {
+					if(isInCountry(new PointFeature(earthquakes.get(j).getLocation()), countryMarkers.get(i))){
+						
+						numInCountry++;
+					}
+				}
+				
+				else {
+					earthquakes.remove(j);
+					quakesOcean++;
+					j--;
+				}
+				
+			}
+			
+			if (numInCountry > 0) {
+				
+				numQuakesCountries.put(countryMarkers.get(i).getId(), numInCountry);
+			}
+			
+		}
+		
+		System.out.println(numQuakesCountries.toString());
+		System.out.println("Number of earthquakes in ocean: " + quakesOcean);
 	}
 	
 	
@@ -215,6 +257,22 @@ public class EarthquakeCityMap extends PApplet {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Copies one list of markers to another list of markers so that it can be used as a 
+	 * local variable so the member variable won't be altered
+	 * @param list1 list of markers that the copy is going to be made from
+	 * @return list of markers identical to the parameter
+	 */
+	private List<Marker> copyList(List<Marker> list1) {
+		List<Marker> list2 = new ArrayList<>();
+		
+		for (int i = 0; i < list1.size(); i++) {
+			list2.add(list1.get(i));
+		}
+		
+		return list2;
 	}
 
 }
