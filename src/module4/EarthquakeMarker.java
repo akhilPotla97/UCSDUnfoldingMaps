@@ -105,6 +105,6 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 	{
 		return isOnLand;
 	}
-	
+		
 	
 }

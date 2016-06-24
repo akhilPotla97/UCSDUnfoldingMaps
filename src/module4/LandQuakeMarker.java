@@ -33,6 +33,9 @@ public class LandQuakeMarker extends EarthquakeMarker {
 		// and how it is set in the EarthquakeMarker constructor
 		
 		// TODO: Implement this method
+		float size = (float) (getMagnitude() * 3);
+		pg.fill(255, 255, 255);
+		pg.ellipse(x, y, size, size);
 		
 	}
 	
@@ -42,6 +45,7 @@ public class LandQuakeMarker extends EarthquakeMarker {
 		return (String) getProperty("country");
 	}
 
+	
 
 
 		
