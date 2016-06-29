@@ -5,6 +5,7 @@ import de.fhpotsdam.unfolding.data.PointFeature;
 import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import processing.core.PConstants;
+import processing.core.PFont;
 import processing.core.PGraphics;
 
 /** Implements a visual marker for cities on an earthquake map
@@ -35,7 +36,7 @@ public class CityMarker extends CommonMarker {
 	/**
 	 * Implementation of method to draw marker on the map.
 	 */
-	public void draw(PGraphics pg, float x, float y) {
+	public void drawMarker(PGraphics pg, float x, float y) {
 		// Save previous drawing style
 		pg.pushStyle();
 		
@@ -51,6 +52,21 @@ public class CityMarker extends CommonMarker {
 	public void showTitle(PGraphics pg, float x, float y)
 	{
 		// TODO: Implement this method
+		String cityInfo = this.getCity() + ", " + this.getCountry();
+		String population = "Population: " + getPopulation();
+		
+		pg.pushStyle();
+		
+		pg.fill(255);
+		pg.rectMode(PConstants.CORNER);
+		pg.rect(x, y, Math.max(pg.textWidth(cityInfo), pg.textWidth(population)) + 7, 39);
+		pg.fill(0);
+		pg.textAlign(PConstants.LEFT, PConstants.TOP);
+		pg.text(cityInfo, x + 5, y + 5);
+		pg.text(population, x + 5, y + 20);
+		
+		pg.popStyle();
+		
 	}
 	
 	
@@ -72,10 +88,4 @@ public class CityMarker extends CommonMarker {
 		return Float.parseFloat(getStringProperty("population"));
 	}
 	
-	
-		@Override
-		public void drawMarker(PGraphics pg, float x, float y) {
-			// TODO Auto-generated method stub
-			
-		}
 }
