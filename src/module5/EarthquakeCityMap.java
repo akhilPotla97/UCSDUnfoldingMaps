@@ -173,6 +173,20 @@ public class EarthquakeCityMap extends PApplet {
 		// TODO: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
+		if (lastClicked != null) {
+			lastClicked = null;
+			unhideMarkers();
+		}
+		
+		earthquakeClicked();
+		if(lastClicked == null){
+			cityClicked();
+		}
+		
+		if(lastClicked == null){
+			unhideMarkers();
+		}
+		
 	}
 	
 	
@@ -184,6 +198,64 @@ public class EarthquakeCityMap extends PApplet {
 			
 		for(Marker marker : cityMarkers) {
 			marker.setHidden(false);
+		}
+	}
+	
+	public void earthquakeClicked(){
+		if (lastClicked != null) {
+			return;
+		}
+		
+		for (Marker m : quakeMarkers) {
+			EarthquakeMarker quake = (EarthquakeMarker) m;
+			
+			if (lastClicked == null && quake.isInside(map, mouseX, mouseY)) {
+				m.setHidden(false);
+				lastClicked = quake;
+				
+				for(Marker city : cityMarkers){
+					if(quake.threatCircle() >= quake.getDistanceTo(city.getLocation())){
+						city.setHidden(false);
+					}
+					
+					else {
+						city.setHidden(true);
+					}
+				}
+			}
+			
+			else {
+				m.setHidden(true);
+			}
+			
+		}
+	}
+	
+	public void cityClicked(){
+		if (lastClicked != null) {
+			return;
+		}
+		
+		for (Marker m : cityMarkers) {
+			if(lastClicked == null && m.isInside(map, mouseX, mouseY)){
+				lastClicked = (CommonMarker) m;
+				m.setHidden(false);
+				
+				for(Marker e : quakeMarkers){
+					EarthquakeMarker quake = (EarthquakeMarker) e;
+					if(quake.threatCircle() >= quake.getDistanceTo(m.getLocation())){
+						quake.setHidden(false);
+					}
+					
+					else {
+						quake.setHidden(true);
+					}
+				}
+			}
+			
+			else {
+				m.setHidden(true);
+			}
 		}
 	}
 	
