@@ -210,7 +210,7 @@ public class EarthquakeCityMap extends PApplet {
 			if (!marker.isHidden() && marker.isInside(map, mouseX, mouseY)) {
 				lastClicked = (CommonMarker)marker;
 				// Hide all the other earthquakes and hide
-				// Display if the city clicked is safe or not by checking to see if the cliced
+				// Display if the city clicked is safe or not by checking to see if the clicked
 				// city is in the threat circle of any earthquake
 				for (Marker mhide : cityMarkers) {
 					if (mhide != lastClicked) {
