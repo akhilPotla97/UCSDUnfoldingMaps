@@ -14,6 +14,7 @@ import processing.core.PGraphics;
 public class CityMarker extends CommonMarker {
 	
 	public static int TRI_SIZE = 5;  // The size of the triangle marker
+	private boolean safe = true;
 	
 	public CityMarker(Location location) {
 		super(location);
@@ -83,5 +84,15 @@ public class CityMarker extends CommonMarker {
 	private float getPopulation()
 	{
 		return Float.parseFloat(getStringProperty("population"));
+	}
+	
+	public boolean getSafe()
+	{
+		return safe;
+	}
+	
+	public void setSafe(boolean safety)
+	{
+		safe = safety;
 	}
 }

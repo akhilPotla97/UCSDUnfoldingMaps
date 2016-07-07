@@ -83,7 +83,7 @@ public class EarthquakeCityMap extends PApplet {
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
 		//earthquakesURL = "test1.atom";
-		earthquakesURL = "test2.atom";
+		//earthquakesURL = "test2.atom";
 		
 		// Uncomment this line to take the quiz
 		//earthquakesURL = "quiz2.atom";
@@ -206,9 +206,12 @@ public class EarthquakeCityMap extends PApplet {
 		if (lastClicked != null) return;
 		// Loop over the earthquake markers to see if one of them is selected
 		for (Marker marker : cityMarkers) {
+			CityMarker cityMarker = (CityMarker) marker;
 			if (!marker.isHidden() && marker.isInside(map, mouseX, mouseY)) {
 				lastClicked = (CommonMarker)marker;
 				// Hide all the other earthquakes and hide
+				// Display if the city clicked is safe or not by checking to see if the cliced
+				// city is in the threat circle of any earthquake
 				for (Marker mhide : cityMarkers) {
 					if (mhide != lastClicked) {
 						mhide.setHidden(true);
@@ -220,6 +223,17 @@ public class EarthquakeCityMap extends PApplet {
 							> quakeMarker.threatCircle()) {
 						quakeMarker.setHidden(true);
 					}
+					else {
+						cityMarker.setSafe(false);
+					}					
+				}
+				
+				if(cityMarker.getSafe()){
+					System.out.println(cityMarker.getProperty("name") + ": Is safe");
+				}
+				
+				else {
+					System.out.println(cityMarker.getProperty("name") + ": Isn't safe");
 				}
 				return;
 			}
